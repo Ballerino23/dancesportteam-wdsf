@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANCESPORTTEAM Analytics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; }
+        body { background: #0a0908; color: #f4f1ed; font-family: Arial, sans-serif; overflow-x: hidden; }
+        
+        .dst-root { padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .dst-header { background: #161412; border-bottom: 2px solid #c9a961; padding: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; }
+        .dst-logo { font-size: 28px; font-weight: bold; color: #c9a961; }
+        .dst-header-right { display: flex; gap: 15px; align-items: center; }
+        .dst-btn { background: #c9a961; color: #0a0908; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; border-radius: 4px; font-size: 13px; }
+        .dst-btn:hover { background: #e6c884; }
+        
+        .login-form { max-width: 450px; margin: 80px auto; background: #161412; padding: 40px; border: 1px solid #2a2622; border-radius: 8px; }
+        .login-form h1 { text-align: center; color: #c9a961; margin-bottom: 30px; font-size: 24px; }
+        .login-form input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0a0908; border: 1px solid #2a2622; color: #f4f1ed; border-radius: 4px; font-size: 14px; }
+        .login-form input:focus { outline: none; border-color: #c9a961; }
+        .login-form button { width: 100%; padding: 12px; background: #c9a961; color: #0a0908; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; margin-bottom: 20px; }
+        .login-form button:hover { background: #e6c884; }
+        .error { color: #a14545; margin-bottom: 15px; text-align: center; font-size: 13px; }
+        .demo-info { margin-top: 30px; padding-top: 20px; border-top: 1px solid #2a2622; text-align: center; font-size: 12px; color: #a39e95; }
+        
+        .card { background: #161412; border: 1px solid #2a2622; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .card h2 { color: #c9a961; font-size: 18px; margin-bottom: 15px; }
+        .card h3 { color: #f4f1ed; font-size: 16px; margin-bottom: 10px; margin-top: 15px; }
+        
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-box { background: #0a0908; border: 1px solid #2a2622; padding: 15px; text-align: center; border-radius: 4px; }
+        .stat-value { font-size: 32px; color: #c9a961; font-weight: bold; margin-bottom: 8px; }
+        .stat-label { font-size: 11px; color: #a39e95; }
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #2a2622; flex-wrap: wrap; }
+        .tab-btn { background: transparent; color: #a39e95; border: none; padding: 12px 20px; cursor: pointer; border-bottom: 3px solid transparent; font-size: 13px; font-weight: bold; }
+        .tab-btn.active { color: #c9a961; border-bottom-color: #c9a961; }
+        .tab-btn:hover { color: #f4f1ed; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        table th { background: #0a0908; color: #c9a961; padding: 10px; text-align: left; border-bottom: 2px solid #2a2622; }
+        table td { padding: 10px; border-bottom: 1px solid #2a2622; }
+        table tr:hover td { background: #1a1714; }
+        
+        .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+        .tag-buono { background: #6b8e5a; color: white; }
+        .tag-medio { background: #c9a961; color: #0a0908; }
+        .tag-cattivo { background: #a14545; color: white; }
+        
+        .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #2a2622; text-align: center; color: #a39e95; font-size: 11px; }
+        .hero { background: #161412; border: 1px solid #2a2622; border-radius: 8px; padding: 25px; margin-bottom: 20px; }
+        .hero h1 { font-size: 28px; margin-bottom: 8px; }
+        .hero-meta { color: #a39e95; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        const COUPLES=[{id:"c-001",partner1:"Marco Bianchi",partner2:"Sofia Romano",country:"ITA",division:"Adult Latin",wdsfRank:87,points:1245,dances:{Samba:7.2,"Cha Cha Cha":7.9,Rumba:8.2,"Paso Doble":6.8,Jive:7.4},competitionsRun:18,coachId:"coach-001"},{id:"c-002",partner1:"Luca Ferrari",partner2:"Elena Conti",country:"ITA",division:"Adult Standard",wdsfRank:142,points:980,dances:{"Slow Waltz":7.6,Tango:7.3,"Viennese Waltz":7.1,Slowfox:6.9,Quickstep:7.4},competitionsRun:14,coachId:"coach-001"}],JUDGES=[{id:"j-01",name:"Hans Müller",country:"GER",avgGiven:8.1},{id:"j-02",name:"Olga Petrova",country:"RUS",avgGiven:7.9},{id:"j-03",name:"Marco Lombardi",country:"ITA",avgGiven:8.0},{id:"j-04",name:"Pierre Dubois",country:"FRA",avgGiven:7.3},{id:"j-05",name:"Sven Lindqvist",country:"SWE",avgGiven:7.4},{id:"j-06",name:"Anna Kowalska",country:"POL",avgGiven:6.8},{id:"j-07",name:"Yuki Tanaka",country:"JPN",avgGiven:6.6},{id:"j-08",name:"Carlos Mendoza",country:"ESP",avgGiven:7.8},{id:"j-09",name:"Beatriz Silva",country:"POR",avgGiven:7.2},{id:"j-10",name:"Klaus Berger",country:"AUT",avgGiven:6.5}],COACHES={"coach-001":{id:"coach-001",email:"marco.coach@dancesport.it",password:"demo123",name:"Marco Coach"},"coach-002":{id:"coach-002",email:"anna.coach@dancesport.it",password:"demo123",name:"Anna Coach"}};let currentUser=JSON.parse(localStorage.getItem("user")||"null"),currentTab="panoramica";const flagFor=e=>({ITA:"🇮🇹",GER:"🇩🇪",RUS:"🇷🇺",FRA:"🇫🇷",ESP:"🇪🇸",POL:"🇵🇱",AUT:"🇦🇹",JPN:"🇯🇵",SWE:"🇸🇪"}[e]||"🏳️"),classifyJudge=e=>e>=7.7?"buono":e>=7?"medio":"cattivo";function render(){const e=document.getElementById("app");if(!currentUser)return void(e.innerHTML=`<div class="login-form"><h1>DANCESPORTTEAM</h1><p style="text-align: center; color: #a39e95; margin-bottom: 30px;">Analytics Dashboard</p><div id="error" class="error"></div><input type="email" id="email" placeholder="Email" /><input type="password" id="password" placeholder="Password" /><button onclick="handleLogin()">ACCEDI</button><div class="demo-info"><strong>Demo Account:</strong><p>marco.coach@dancesport.it / demo123</p></div></div>`,document.getElementById("password")?.addEventListener("keypress",(e=>{"Enter"===e.key&&handleLogin()})));const t=COUPLES.filter(e=>"coach-001"===e.coachId)[0];if(!t)return void(e.innerHTML='<div class="dst-root"><div class="card"><h2>Nessuna coppia</h2></div></div>');const a=JUDGES.map(e=>({...e,class:classifyJudge(e.avgGiven)})),o=a.filter(e=>"buono"===e.class),i=a.filter(e=>"medio"===e.class);let n="";if("panoramica"===currentTab){const e=Object.entries(t.dances).sort((e,a)=>a[1]-e[1])[0][0];n=`<div class="card"><h2>📊 Performance</h2><table><thead><tr><th>Ballo</th><th>Score</th></tr></thead><tbody>${Object.entries(t.dances).map(([e,t])=>`<tr><td>${e}</td><td>${t.toFixed(2)}</td></tr>`).join("")}</tbody></table></div><div class="card"><h2>💡 Sintesi</h2><p><strong>${o.length}</strong> giudici buoni</p><p>Ballo migliore: ${e}</p></div>`}else if("giudici"===currentTab){n=`<div class="card"><h3>GIUDICI BUONI</h3><table><tr><th>Nome</th><th>Score</th></tr>${o.map(e=>`<tr><td>${e.name}</td><td>${e.avgGiven.toFixed(2)}</td></tr>`).join("")}</table></div><div class="card"><h3>GIUDICI MEDI</h3><table><tr><th>Nome</th><th>Score</th></tr>${i.map(e=>`<tr><td>${e.name}</td><td>${e.avgGiven.toFixed(2)}</td></tr>`).join("")}</table></div>`}else if("balli"===currentTab){n=`<div class="card"><h2>💃 Balli</h2>${Object.entries(t.dances).map(([e,t])=>`<div style="margin-bottom: 15px;"><strong>${e}</strong> - ${t.toFixed(2)}</div>`).join("")}</div>`}else if("gare"===currentTab){n=`<div class="card"><h2>🏆 Gare Consigliate</h2><p>3 gare prioritarie identificate nel calendario 2026</p></div>`}else if("roadmap"===currentTab){n=`<div class="card"><h2>🎯 Roadmap 12 Mesi</h2><p><strong>Fase 1 (4 mesi):</strong> Base tecnica</p><p><strong>Fase 2 (8 mesi):</strong> Consolidamento</p><p><strong>Fase 3 (12 mesi):</strong> Qualificazione GrandSlam</p></div>`}else if("pagella"===currentTab){const e=Object.values(t.dances).reduce((e,t)=>e+t,0)/Object.values(t.dances).length,a=e>=8?"A":e>=7.5?"B+":"B";n=`<div style="background: #1a1714; border: 1px solid #8a7544; padding: 30px; max-width: 900px; margin: 0 auto; border-radius: 8px;"><div style="display: flex; justify-content: space-between; margin-bottom: 20px;"><div><div style="color: #c9a961; font-size: 11px; font-weight: bold;">PAGELLA</div><div style="font-size: 20px; font-weight: bold;">${t.partner1} & ${t.partner2}</div></div><div style="text-align: right;"><div style="font-size: 48px; color: #c9a961; font-weight: bold;">${a}</div><div style="font-size: 11px; color: #a39e95;">Voto</div></div></div><div style="border-top: 1px solid #c9a961; padding-top: 15px; color: #d6d0c6;"><p>Performance media: ${e.toFixed(2)}</p><p style="margin-top: 10px;">Raccomandazioni: Aumentare gare con pannelli favorevoli, lavoro tecnico su balli deboli.</p></div></div>`}e.innerHTML=`<div class="dst-root"><div class="dst-header"><div><div class="dst-logo">DST</div></div><div class="dst-header-right"><span>${currentUser.name}</span><button class="dst-btn" onclick="handleLogout()">LOGOUT</button></div></div><div class="hero"><h1>${t.partner1} & ${t.partner2}</h1><div class="hero-meta">${flagFor(t.country)} ${t.country} · ${t.division}</div></div><div class="stats"><div class="stat-box"><div class="stat-value">#${t.wdsfRank}</div><div class="stat-label">RANK</div></div><div class="stat-box"><div class="stat-value">${t.points}</div><div class="stat-label">PUNTI</div></div><div class="stat-box"><div class="stat-value">${o.length}</div><div class="stat-label">GIUDICI BUONI</div></div></div><div class="tabs"><button class="tab-btn ${"panoramica"===currentTab?"active":""}" onclick="changeTab('panoramica')">Panoramica</button><button class="tab-btn ${"giudici"===currentTab?"active":""}" onclick="changeTab('giudici')">Giudici</button><button class="tab-btn ${"balli"===currentTab?"active":""}" onclick="changeTab('balli')">Balli</button><button class="tab-btn ${"gare"===currentTab?"active":""}" onclick="changeTab('gare')">Gare</button><button class="tab-btn ${"roadmap"===currentTab?"active":""}" onclick="changeTab('roadmap')">Roadmap</button><button class="tab-btn ${"pagella"===currentTab?"active":""}" onclick="changeTab('pagella')">Pagella</button></div>${n}<div class="footer"><strong>dancesportteam</strong> · Analytics</div></div>`}function handleLogin(){const e=document.getElementById("email").value,t=document.getElementById("password").value,a=Object.values(COACHES).find(a=>a.email===e&&a.password===t);a?(currentUser={id:a.id,email:a.email,name:a.name},currentTab="panoramica",localStorage.setItem("user",JSON.stringify(currentUser)),render()):document.getElementById("error").textContent="Email o password non corretti"}function handleLogout(){currentUser=null,localStorage.removeItem("user"),currentTab="panoramica",render()}function changeTab(e){currentTab=e,render()}window.handleLogin=handleLogin,window.handleLogout=handleLogout,window.changeTab=changeTab,render();
+    </script>
+</body>
+</html>
